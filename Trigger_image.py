@@ -14,18 +14,21 @@ def init_camera() -> tuple:
         - system (PySpin.SystemPtr): PySpin system instance.
     """
     cam = None
-    print('*** INITIALIZING CAMERA ***\n')
+
     try:
         system = PySpin.System.GetInstance()
         cam_list = system.GetCameras()
         cam = cam_list.GetByIndex(0)
         cam.Init()
+        
+        print('*** CAMERA INITIALIZED *** \n')
+
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
     
     return cam, cam_list, system
 
-def configure_trigger(cam) -> bool:
+def configure_trigger(cam):
     """
     Configure the camera to use a hardware or software trigger.
 
@@ -37,14 +40,9 @@ def configure_trigger(cam) -> bool:
     cam : PySpin.CameraPtr
         The camera to configure the trigger for.
 
-    Returns
-    -------
-    bool
-        True if the configuration is successful, False otherwise.
     """
-    print('*** CONFIGURING TRIGGER ***\n')
+
     try:
-        result = True
 
         if cam.TriggerMode.GetAccessMode() != PySpin.RW:
             print('Unable to disable trigger mode (node retrieval). Aborting...')
@@ -63,15 +61,14 @@ def configure_trigger(cam) -> bool:
         print('Trigger activation set to RisingEdge...')
         
         cam.TriggerMode.SetValue(PySpin.TriggerMode_On)
-        print('Trigger mode turned back on...')
+        print('Trigger mode turned back on...\n')
+        
+        print('*** TRIGGER CONFIGURED ***\n')
         
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
-        return False
 
-    return result
-
-def Start_acquisition(cam) -> bool:
+def Start_acquisition(cam):
     """
     Start image acquisition on the camera in continuous mode.
 
@@ -88,7 +85,9 @@ def Start_acquisition(cam) -> bool:
     bool
         True if the acquisition is started successfully, False otherwise.
     """
+    
     print('*** IMAGE ACQUISITION ***\n')
+    
     try:
         if cam.AcquisitionMode.GetAccessMode() != PySpin.RW:
             print('Unable to set acquisition mode to continuous. Aborting...')
@@ -102,9 +101,6 @@ def Start_acquisition(cam) -> bool:
         
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
-        return False
-    
-    return True
 
 def GetImage(cam):
     """
@@ -125,8 +121,11 @@ def GetImage(cam):
     image_result = None
     try:
         image_result = cam.GetNextImage(500)
+        print('*** GOT AN IMAGE ***\n')
+        
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
+        
     return image_result
 
 def save_image(image_result, filename='Triggered_image.jpg'):
@@ -143,7 +142,7 @@ def save_image(image_result, filename='Triggered_image.jpg'):
     filename : str, optional
         The filename to save the image as. Default is 'Triggered_image.jpg'.
     """
-    print('*** SAVING IMAGE ***\n')
+    print('*** IMAGE PROCESSING AND SAVING ***\n')
     try:
         processor = PySpin.ImageProcessor()
         processor.SetColorProcessing(PySpin.SPINNAKER_COLOR_PROCESSING_ALGORITHM_HQ_LINEAR)
@@ -161,7 +160,7 @@ def save_image(image_result, filename='Triggered_image.jpg'):
     except PySpin.SpinnakerException as ex:
         print('Error: %s' % ex)
 
-def reset_trigger(cam) -> bool:
+def reset_trigger(cam):
     """
     Reset the camera by disabling the trigger mode.
 
@@ -170,10 +169,6 @@ def reset_trigger(cam) -> bool:
     cam : PySpin.CameraPtr
         The camera to reset the trigger mode for.
 
-    Returns
-    -------
-    bool
-        True if the trigger is successfully disabled, False otherwise.
     """
     try:
         result = True

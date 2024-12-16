@@ -4,8 +4,8 @@ A Python library for controlling FLIR cameras using the PySpin SDK. This library
 
 ## Features
 - Initialize and configure FLIR cameras.
-- Set up hardware or software triggers.
-- Capture images continuously or using external triggers.
+- Set up hardware trigger.
+- Capture images continuously or using external trigger.
 - Save images in `mono8` format.
 - Reset and safely shut down the camera system.
 
@@ -26,7 +26,7 @@ Before using this library, ensure you have:
   ```
   cd flir-camera-control
   ```
-3. Install the required dependencies (if any) using `pip`:
+1. Install the required dependencies using `pip`:
   ```
   pip install -r requirements.txt
   ```
