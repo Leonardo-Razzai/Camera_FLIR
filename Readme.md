@@ -19,11 +19,14 @@ Before using this library, ensure you have:
 
 ### Installing the Library
 1. Clone the repository from GitHub:
-  ```bash
+  ```
   git clone https://github.com/yourusername/flir-camera-control.git
+  ```
 2. Navigate to the cloned directory:
-  ```bash
+  ```
   cd flir-camera-control
+  ```
 3. Install the required dependencies (if any) using `pip`:
+  ```
   pip install -r requirements.txt
-
+  ```
